@@ -14,20 +14,10 @@ object Constants {
 
   case class ItemViewCount(itemId: Long, windowEnd: Long, count: Long)
 
+  case class LoginEvent(userId: Long, ip: String, eventType: String, eventTime: Long)
 
-  val prop = new Properties()
-  prop.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, zk_servers)
-1
-  def producer_prop(): Properties = {
-    prop.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, classOf[StringSerializer].getName)
-    prop.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, classOf[StringSerializer].getName)
-    prop
-  }
+  case class Warning(userId: Long, firstFailTime: Long, lastFailTime: Long, warningMsg: String)
 
-  def consumer_prop(): Properties = {
-    prop.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, classOf[StringDeserializer].getName)
-    prop.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_DOC, classOf[StringDeserializer].getName)
-    prop
-  }
+
 
 }

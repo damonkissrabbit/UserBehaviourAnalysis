@@ -1,6 +1,6 @@
 package com.damon.HotItemAnalysis
 
-import com.damon.constants.Constants.producer_prop
+import com.damon.utils.common.producer_prop
 import org.apache.kafka.clients.producer.{Callback, KafkaProducer, ProducerRecord, RecordMetadata}
 
 object KafkaProducer {

@@ -2,12 +2,12 @@ package com.damon.HotItemAnalysis
 
 import org.apache.flink.streaming.api.scala._
 import com.damon.constants.Constants.{ItemViewCount, UserBehaviour}
+import com.damon.utils.common.create_env
 import org.apache.flink.api.common.functions.AggregateFunction
 import org.apache.flink.api.common.state.{ListState, ListStateDescriptor}
 import org.apache.flink.configuration.Configuration
 import org.apache.flink.streaming.api.TimeCharacteristic
 import org.apache.flink.streaming.api.functions.KeyedProcessFunction
-import org.apache.flink.streaming.api.scala.StreamExecutionEnvironment
 import org.apache.flink.streaming.api.scala.function.WindowFunction
 import org.apache.flink.streaming.api.windowing.time.Time
 import org.apache.flink.streaming.api.windowing.windows.TimeWindow
@@ -18,7 +18,7 @@ import scala.collection.mutable.ListBuffer
 
 object HotItems {
   def main(args: Array[String]): Unit = {
-    val env = StreamExecutionEnvironment.getExecutionEnvironment
+    val env = create_env()
     env.setParallelism(1)
     env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime)
 
@@ -35,7 +35,7 @@ object HotItems {
       })
       .assignAscendingTimestamps(_.timestamp * 1000L)
 
-    dataSource
+    val processStream: DataStream[String] = dataSource
       .filter(_.behaviour == "pv")
       .keyBy(_.itemId)
       .timeWindow(Time.hours(1), Time.minutes(5))
@@ -43,10 +43,14 @@ object HotItems {
       .keyBy(_.windowEnd)
       .process(new TopHotItem(3))
 
+    processStream.print()
+    env.execute("hot items job")
+
   }
 }
 
 // the output of CountAgg is the input of WindowResult
+// in acc out
 class CountAgg() extends AggregateFunction[UserBehaviour, Long, Long] {
   override def createAccumulator(): Long = 0L
 

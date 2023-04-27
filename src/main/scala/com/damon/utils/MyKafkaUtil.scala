@@ -4,7 +4,8 @@ import org.apache.flink.api.common.serialization.SimpleStringSchema
 import org.apache.flink.streaming.connectors.kafka.{FlinkKafkaConsumer, FlinkKafkaProducer}
 
 import java.util.Properties
-import com.damon.constants.Constants.{producer_prop, zk_servers}
+import com.damon.constants.Constants.zk_servers
+import com.damon.utils.common.producer_prop
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.common.serialization.StringDeserializer
 
