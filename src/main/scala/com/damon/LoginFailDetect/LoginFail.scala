@@ -59,7 +59,7 @@ class LoginWarning(maxFailTimes: Int) extends KeyedProcessFunction[Long, LoginEv
 
     // 因为如果一下子大量登录失败，其实没必要等到2秒钟后的定时器触发，故可以将定时器进行注释
     if (value.eventType == "fail") {
-      // 如果是失败，潘丹之前是否有登录失败事件
+      // 如果是失败，判断之前是否有登录失败事件
       val iter = loginFailState.get().iterator()
       if (iter.hasNext) {
         // 如果有登录失败事件，就比较事件时间
