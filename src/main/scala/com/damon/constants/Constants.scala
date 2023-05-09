@@ -18,6 +18,7 @@ object Constants {
 
   case class Warning(userId: Long, firstFailTime: Long, lastFailTime: Long, warningMsg: String)
 
+  case class MarketingUserBehavior(userId: String, behavior: String, channel: String, timestamp: Long)
 
 
 }
