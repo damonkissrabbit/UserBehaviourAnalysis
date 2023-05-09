@@ -18,6 +18,7 @@ object LoginFailWithCEP {
     env.setParallelism(1)
     env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime)
 
+
     val resource = getClass.getResource("/LoginFailDetect/LoginLog.csv")
 
     val loginEventStream: DataStream[LoginEvent] = env.readTextFile(resource.getPath)
