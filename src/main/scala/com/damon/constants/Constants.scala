@@ -20,5 +20,13 @@ object Constants {
 
   case class MarketingUserBehavior(userId: String, behavior: String, channel: String, timestamp: Long)
 
+  case class MarketingViewCount(windowStart: String, windowEnd: String, channel: String, behavior: String, count: Long)
+
+  case class AdClickEvent(userId: Long, adId: Long, province: String, city: String, timestamp: Long)
+
+  case class CountByProvince(windowEnd: String, province: String, count: Long)
+
+  case class BlackListWarning(userId: Long, adId: Long, msg: String)
+
 
 }

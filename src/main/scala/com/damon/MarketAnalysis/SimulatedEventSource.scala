@@ -27,7 +27,7 @@ class SimulatedEventSource() extends RichSourceFunction[MarketingUserBehavior] {
 
       ctx.collect(MarketingUserBehavior(id, behavior, channel, ts))
       count += 1
-      TimeUnit.MILLISECONDS.sleep(10L)
+//      TimeUnit.MILLISECONDS.sleep(10L)
     }
   }
 
