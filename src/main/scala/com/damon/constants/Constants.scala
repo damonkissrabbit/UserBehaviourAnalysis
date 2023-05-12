@@ -33,4 +33,6 @@ object Constants {
   case class UrlViewCount(url: String, windowEnd: Long, count: Long)
 
   case class UserBehavior(userId: Long, itemId: Long, categoryId: Int, behavior: String, timestamp: Long)
+
+  case class UvCount(windowEnd: Long, uvCount: Long)
 }

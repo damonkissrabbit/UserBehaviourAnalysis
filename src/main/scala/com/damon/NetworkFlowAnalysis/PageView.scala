@@ -24,7 +24,7 @@ object PageView {
       .map(data => ("pv", 1))
       .keyBy(_._1)
       .timeWindow(Time.seconds(10))
-      .sum(1)
+      .sum(1) // 对元组的第二个元素进行求和操作
 
     dataStream.print("pv count: ")
 
