@@ -17,7 +17,7 @@ object BloomFilterWithRedis {
     env.setParallelism(1)
     env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime)
 
-    env.readTextFile("C:\\Users\\star\\Desktop\\UserBehaviourAnalysis\\src\\main\\resources\\NetworkFlowAnalysis\\UserBehavior.csv")
+    val dataStream: DataStream[UvCount] = env.readTextFile("C:\\Users\\star\\Desktop\\UserBehaviourAnalysis\\src\\main\\resources\\NetworkFlowAnalysis\\UserBehavior.csv")
       .map(data => {
         val dataArrays: Array[String] = data.split(",")
         UserBehaviour(dataArrays(0).trim.toLong, dataArrays(1).trim.toLong, dataArrays(2).trim.toInt, dataArrays(3).trim, dataArrays(4).trim.toLong)
@@ -29,6 +29,10 @@ object BloomFilterWithRedis {
       .timeWindow(Time.minutes(2))
       .trigger(new MyTrigger())
       .process(new BFWithRedis())
+
+    dataStream.print()
+
+    env.execute()
 
   }
 }
@@ -65,19 +69,23 @@ class BFWithRedis() extends ProcessWindowFunction[(String, Long), UvCount, Strin
   lazy val bloom = new Bloom(1 << 29)
 
   override def process(key: String, context: Context, elements: Iterable[(String, Long)], out: Collector[UvCount]): Unit = {
+    // 位图的存储方式，key是windowEnd, value是bitmap
     val storeKey = context.window.getEnd.toString
     var count = 0L
 
+    // 把每个窗口的uv-count值也存入count的redis表，存放内容为 (windowEnd -> uvCount)，所以要先从redis里面读取
     if (jedis.hget("count", storeKey) != null) {
       count = jedis.hget("count", storeKey).toLong
     }
 
+    // 用布隆过滤器判断当前用户是否已经存在
     val userId = elements.iterator.next()._2.toString
     val offset: Long = bloom.hash(userId, 61)
 
+    // 定义一个标识位，判断redis位图中有没有这一位
     val isExist = jedis.getbit(storeKey, offset)
-
     if (!isExist) {
+      // 如果不存在，位图对应位置是1，count + 1
       jedis.setbit(storeKey, offset, true)
       jedis.hset("count", storeKey, (count + 1).toString)
       out.collect(UvCount(storeKey.toLong, count + 1))

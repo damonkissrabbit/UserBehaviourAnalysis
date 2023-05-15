@@ -35,4 +35,8 @@ object Constants {
   case class UserBehavior(userId: Long, itemId: Long, categoryId: Int, behavior: String, timestamp: Long)
 
   case class UvCount(windowEnd: Long, uvCount: Long)
+
+  case class OrderEvent(orderId: Long, eventType: String, txId: String, eventTime: Long)
+
+  case class OrderResult(orderId: Long, resultMsg: String)
 }
