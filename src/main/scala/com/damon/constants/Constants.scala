@@ -39,4 +39,6 @@ object Constants {
   case class OrderEvent(orderId: Long, eventType: String, txId: String, eventTime: Long)
 
   case class OrderResult(orderId: Long, resultMsg: String)
+
+  case class ReceiptEvent(txId: String, payChannel: String, eventTime: Long)
 }
