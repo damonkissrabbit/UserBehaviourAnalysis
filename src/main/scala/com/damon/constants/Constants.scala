@@ -1,14 +1,7 @@
 package com.damon.constants
 
-import com.esotericsoftware.kryo.serializers.DefaultSerializers.StringSerializer
-import org.apache.kafka.clients.consumer.ConsumerConfig
-import org.apache.kafka.clients.producer.ProducerConfig
-import org.apache.kafka.common.serialization.StringDeserializer
-
-import java.util.Properties
-
 object Constants {
-  val zk_servers = "master:9002, slave1:9002, slave2:9002"
+  val kafka_servers = "localhost:9002, localhost:9093, localhost:9094"
 
   case class UserBehaviour(userId: Long, itemId: Long, categoryId: Int, behaviour: String, timestamp: Long)
 
