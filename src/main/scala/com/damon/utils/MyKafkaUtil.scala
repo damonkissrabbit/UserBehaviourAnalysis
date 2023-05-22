@@ -12,7 +12,7 @@ import org.apache.kafka.common.serialization.StringDeserializer
 object MyKafkaUtil {
   val prop: Properties = producer_prop()
   prop.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, classOf[StringDeserializer].getName)
-  prop.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_DOC, classOf[StringDeserializer].getName)
+  prop.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, classOf[StringDeserializer].getName)
   prop.setProperty("group.id", "consumer_group")
   prop.setProperty("auto.offset.reset", "latest")
 
