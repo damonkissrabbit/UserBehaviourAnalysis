@@ -1,13 +1,12 @@
 package com.damon.sqlQueries
 
-import akka.remote.serialization.StringSerializer
 import com.damon.constants.Constants.{UserBehaviour, kafka_servers}
 import org.apache.flink.streaming.api.scala._
-import com.damon.utils.common.{create_env, prop}
+import com.damon.utils.common.create_env
 import org.apache.flink.api.common.serialization.SimpleStringSchema
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer
 import org.apache.flink.table.api.bridge.scala.StreamTableEnvironment
-import org.apache.flink.table.api.{EnvironmentSettings, TableEnvironment}
+import org.apache.flink.table.api.EnvironmentSettings
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.common.serialization.StringDeserializer
 
@@ -37,7 +36,7 @@ object blink_kafka {
         UserBehaviour(dataArrays(0).trim.toLong, dataArrays(1).trim.toLong, dataArrays(2).trim.toInt, dataArrays(3).trim, dataArrays(4).trim.toLong)
       })
 
-    val table = bsEnv.fromDataStream(dataStream).as("a", "b", "c", "d", "e")
+    val table = bsEnv.fromDataStream(dataStream)
 
     bsEnv.createTemporaryView("userBehavior", table)
 
